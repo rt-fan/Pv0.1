@@ -1,18 +1,18 @@
-import os  # пинг в операционной системе
-import re  # поиск
+import re                           # поиск
 import sys
-from pysnmp.hlapi import *
-#from py_snmp_test import pingtest
+from pysnmp.hlapi import *          # библиотека для snmp соединения 
+from py_snmp_test import pingtest   # файл с функцией пинга
+from const import *                 # данные для подключения
 
-ip = '127.0.0.1'
-oid_test = '1.3.6.1.2.1.1.1' # описание коммутатора
+ip = ''                             # ip-адрес для проверочного запроса
+oid_test = '1.3.6.1.2.1.1.1'        # описание коммутатора
 
 def vendor(host, oid):
     for (errorIndication,
          errorStatus,
          errorIndex,
          varBinds) in nextCmd(SnmpEngine(),
-                              CommunityData('community'),
+                              CommunityData(community),
                               UdpTransportTarget((host, 161)),
                               ContextData(),
                               ObjectType(ObjectIdentity(oid)),
@@ -43,26 +43,24 @@ def vendor(host, oid):
                     print('>>> Huawei')
                 else:
                     print('unknown vendor')
-
-                # elif re.search(r'\bHuawei\b', text):   ---  \b учитывается знак пробела до и после искомого слова
-                #     print('>>> Huawei')
-
-
-def pingtest(ip):
-    response = os.system("ping -n 1 -w 100 " + ip)
-    if response == 0:
-        b = True
-    else:
-        b = False
-    return b
-
-
+                
+                """
+                elif re.search(r'\bHuawei\b', text):   ---  \b учитывается знак пробела до и после искомого слова
+                    print('>>> Huawei')
+                """
+                
+"""
+Открываем текстовый файл и построчно передаем строку с ip в функцию pingtest(),
+если пинг проходит, отдаем этот ip в функцию vendor().
+p.s: line() - передает строку с переносом строки(\n), line.strip() - передает строку съедая знак переноса.
+"""
 f = open('ip.txt')
 line = f.readline()
 while line:
-    print(line)
-    if pingtest(line) == True:
-        print(line)
-        vendor(line, oid_test) # не работает
+    if pingtest(line.strip()):
+        print('ping ' + line.strip() + ' yes')
+        vendor(line.strip(), oid_test)
+    else:
+        print('ping ' + line.strip() + ' no')
     line = f.readline()
 f.close()

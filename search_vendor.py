@@ -1,7 +1,7 @@
 import re                           # поиск
 import sys
 from pysnmp.hlapi import *          # библиотека для snmp соединения 
-from py_snmp_test import pingtest   # файл с функцией пинга
+from pingtest import pingtest   # файл с функцией пинга
 from const import *                 # данные для подключения
 
 ip = ''                             # ip-адрес для проверочного запроса

@@ -7,15 +7,3 @@ def pingtest(ip):
     else:
         b = False
     return b
-
-
-f = open('ip.txt')
-line = f.readline()
-while line:
-    if ping(line.strip()):
-        print('ping ' + line.strip() + ' yes')
-        # vendor(line.strip(), oid_test)
-    else:
-        print('ping ' + line.strip() + ' no')
-    line = f.readline()
-f.close()

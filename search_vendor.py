@@ -1,11 +1,12 @@
-import re                           # поиск
+import re                            # поиск
 import sys
-from pysnmp.hlapi import *          # библиотека для snmp соединения 
-from pingtest import pingtest   # файл с функцией пинга
-from const import *                 # данные для подключения
+from pysnmp.hlapi import *           # библиотека для snmp соединения
+from pingtest import ping            # файл с функцией пинга
+from const import *                  # данные для подключения
 
-ip = ''                             # ip-адрес для проверочного запроса
-oid_test = '1.3.6.1.2.1.1.1'        # описание коммутатора
+ip = ''                              # ip-адрес для проверочного запроса
+oid_test = '1.3.6.1.2.1.1.1'         # описание коммутатора
+
 
 def vendor(host, oid):
     for (errorIndication,
@@ -43,12 +44,13 @@ def vendor(host, oid):
                     print('>>> Huawei')
                 else:
                     print('unknown vendor')
-                
+
                 """
                 elif re.search(r'\bHuawei\b', text):   ---  \b учитывается знак пробела до и после искомого слова
                     print('>>> Huawei')
                 """
-                
+
+
 """
 Открываем текстовый файл и построчно передаем строку с ip в функцию pingtest(),
 если пинг проходит, отдаем этот ip в функцию vendor().
@@ -57,10 +59,11 @@ p.s: line() - передает строку с переносом строки(\
 f = open('ip.txt')
 line = f.readline()
 while line:
-    if pingtest(line.strip()):
-        print('ping ' + line.strip() + ' yes')
+    if ping(line.strip()):
+        print('ping ' + line.strip() + ' yes')  # вывод сообщения о том, что пинг есть
         vendor(line.strip(), oid_test)
+
     else:
-        print('ping ' + line.strip() + ' no')
+        print('ping ' + line.strip() + ' no')  # вывод сообщения о том, что пинга нет
     line = f.readline()
 f.close()

@@ -3,6 +3,8 @@ import re
 import sys
 from pysnmp.hlapi import *
 from const import *
+import mysql.connector
+from mysql.connector import errorcode  # для работы с mysql неоходимо поставить mysql.connector для python3
 
 oid_ind = '1.3.6.1.2.1.2.2.1.1'
 oid_des = '1.3.6.1.2.1.2.2.1.2'
@@ -150,3 +152,4 @@ def interface_list(host, oid):
 
 
 interface_list(ip_address, oid_des)
+

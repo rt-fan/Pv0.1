@@ -6,7 +6,8 @@ from datetime import *
 oid_name = '1.3.6.1.2.1.1.5'
 oid_uptime = '1.3.6.1.2.1.1.3'
 
-def name(host, oid):
+
+def sys_name(host, oid):
     for (errorIndication,
          errorStatus,
          errorIndex,
@@ -30,7 +31,7 @@ def name(host, oid):
                 print(varBind[1])
 
 
-def uptime(host, oid):
+def sys_uptime(host, oid):
     for (errorIndication,
          errorStatus,
          errorIndex,
@@ -53,10 +54,9 @@ def uptime(host, oid):
             for varBind in varBinds:
                 x = int(varBind[1])
                 d = timedelta(milliseconds=x)  # 4th argument - milliseconds
+                #  time_format = "%Y-%m-%d %H:%M:%S"
                 print(d)
 
 
-name('10.11.1.228', oid_name)
-uptime('10.11.1.228', oid_uptime)
-
-
+sys_name('10.11.1.228', oid_name)
+sys_uptime('10.11.1.228', oid_uptime)

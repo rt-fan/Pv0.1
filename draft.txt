@@ -1,0 +1,283 @@
+***************************************************************************
+#                                                                         #
+#  пинг ip-адреса для проверки доступности коммутатора в search_vendor    #
+#                                                                         #
+***************************************************************************
+
+==================================================
+======  шаблон SNMP запроса на коммутатор  =======
+==================================================
+
+
+def function(host, oid):
+    for (errorIndication,
+         errorStatus,
+         errorIndex,
+         varBinds) in nextCmd(SnmpEngine(),
+                              CommunityData(community),
+                              UdpTransportTarget((host, 161)),
+                              ContextData(),
+                              ObjectType(ObjectIdentity(oid)),
+                              lexicographicMode=False):
+        if errorIndication:
+            print(errorIndication, file=sys.stderr)
+            break
+        elif errorStatus:
+            print('%s at %s' % (errorStatus.prettyPrint(),
+                                errorIndex and varBinds[int(errorIndex) - 1][0] or '?'),
+                  file=sys.stderr)
+            break
+
+        else:
+            for varBind in varBinds:
+                print(varBind[1])
+
+
+===========================================================================
+***************************************************************************
+
+# s.lstrip()
+                # str.replace(symbol, "", 1) --- третий параметр для удаления первого символа.
+                # str.replace(symbol, "") --- если передать два параметра, удалит все символы из строки.
+
+***************************************************************************
+
+def ping(host):
+    ping_str = "-n 1" if platform.system().lower() == "windows" else "-c 1"
+    args = "ping" + " " + ping_str + " " + host
+    con_out = subprocess.check_output(args, shell=True).decode('cp866')
+    return con_out
+
+ping_out = ping("")
+string = str(ping_out)
+
+***************************************************************************
+
+host_ip = '8.8.8.8'
+ping = os.system("""@echo off
+ping -n 1 """ + host_ip)
+if ping == 0:
+    print('congrats')
+
+***************************************************************************
+
+def pingtest(ip):
+    response = os.system("ping -n 1 -w 20 " + ip)
+    if response == 0:
+        b = True
+    else:
+        b = False
+    return b
+
+***************************************************************************
+
+def ping(host):
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+
+    # Option for the number of packets as a function of
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+
+    # Building the command. Ex: "ping -c 1 google.com"
+    command = ['ping', param, '1', host]
+
+    return subprocess.call(command) == 0
+
+f = open('ip.txt')
+line = f.readline()
+while line:
+    if ping(line.strip()) == True:
+        print('ping ' + line.strip() + ' yes')
+    else:
+        print('ping ' + line.strip() + ' no')
+    line = f.readline()
+f.close()
+
+***************************************************************************
+
+import platform    # For getting the operating system name
+import subprocess  # For executing a shell command
+
+def ping(host):
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+
+    # Option for the number of packets as a function of
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+
+    # Building the command. Ex: "ping -c 1 google.com"
+    command = ['ping', param, '1', host]
+
+    return subprocess.call(command) == 0
+
+**************************************************************************
+
+import os
+hostname = "google.com" #example
+response = os.system("ping -c 1 " + hostname)
+
+#and then check the response...
+if response == 0:
+  print hostname, 'is up!'
+else:
+  print hostname, 'is down!'
+
+***************************************************************************
+
+import pyping
+
+r = pyping.ping('google.com')
+
+if r.ret_code == 0:
+    print("Success")
+else:
+    print("Failed with {}".format(r.ret_code))
+
+***************************************************************************
+
+from ping3 import ping, verbose_ping
+ping('example.com')  # Returns delay in seconds.
+>>> 0.215697261510079666
+
+***************************************************************************
+
+(неработает)
+#!/usr/bin/python
+import pyping
+
+response = pyping.ping('Your IP')
+
+if response.ret_code == 0:
+    print("reachable")
+else:
+    print("unreachable")
+
+***************************************************************************
+
+import subprocess as sp
+
+def ipcheck():
+    status,result = sp.getstatusoutput("ping -c1 -w2 " + str(pop))
+    if status == 0:
+        print("System " + str(pop) + " is UP !")
+    else:
+        print("System " + str(pop) + " is DOWN !")
+
+
+pop = input("Enter the ip address: ")
+ipcheck()
+
+***************************************************************************
+
+import subprocess
+fp = open('ip_host.txt')
+for ip in fp.readlines():
+    response = subprocess.Popen(["ping.exe",ip])
+    response.wait()
+    result = []
+    if response.poll():
+       res = (ip + " - is down")
+    else:
+       res = (ip + " - is up")
+
+    result.append(res)
+    print(result)
+
+***************************************************************************
+
+import os
+os.system('cls')
+print('#' * 60)
+ip_to_check = input('IP to check: ')
+os.system('ping {}'.format(ip_to_check))
+
+***************************************************************************
+
+import platform    # For getting the operating system name
+import subprocess  # For executing a shell command
+
+def ping(host):
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+
+    # Option for the number of packets as a function of
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+
+    # Building the command. Ex: "ping -c 1 google.com"
+    command = ['ping', param, '1', host]
+
+    return subprocess.call(command) == 0
+
+***************************************************************************
+
+def pingtest(ip):
+    response = os.system("ping -n 1 -w 100 " + ip)
+    if response == 0:
+        b = True
+    else:
+        b = False
+    return b
+
+***************************************************************************
+
+import yaml
+from pprint import pprint
+
+
+# trunk_1 = ["name1", "name2", "name3"]
+# access_1 = ["name4", "name5", "name6"]
+# to_yaml = {'dict1': trunk_1, 'dict2': access_1}
+# with open('test.yaml', 'w') as f:
+#     yaml.dump(to_yaml, f)
+# with open('test.yaml') as f:
+#     print(f.read())
+
+
+# with open("test.yaml") as f:
+#     templates = yaml.load(f)
+# pprint(templates)
+
+***************************************************************************
+
+import mysql.connector
+from mysql.connector import errorcode
+
+conn = mysql.connector.connect(user="root", password="", host="127.0.0.1", database="rtdb")
+cursor = conn.cursor(buffered=True)
+print('Подключение к БД прошло успешно.')
+
+ip = '10.11.1.1'
+name = 'London'
+mac = 'cc:ff:ff:ff:ff:ff'
+
+# add_unit = ("INSERT INTO unit "
+#             "(unit_ip, unit_name, unit_mac) "
+#             "VALUES ( 'ip', 'name', 'mac')")
+#
+# cursor.execute(add_unit)
+# emp_no = cursor.lastrowid
+
+add_unit2 = ("INSERT INTO unit "
+             "(unit_ip, unit_name, unit_mac) "
+             "VALUES ('%(ip)s', '%(name)s', '%(mac)s')" % {'ip': ip, 'name': name, 'mac': mac})
+
+cursor.execute(add_unit2)
+
+# data_salary = {
+#   'ip': ip,
+#   'name': name,
+#   'mac': mac,
+# }
+# cursor.execute(add_unit2, data_salary)
+
+conn.commit()
+conn.close()
+
+***************************************************************************
+

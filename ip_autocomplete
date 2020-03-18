@@ -1,0 +1,27 @@
+"""
+    в файле ip.txt следующие строки:
+    192.168.1.1
+    192.168.2.5-10
+    192.168.3.*
+"""
+
+f = open('ip.txt')
+line = f.readline()
+while line:
+    line2 = line.strip()
+    if '*' in line2:
+        a = 0
+        while a < 5:
+            a += 1
+            print(line2.replace('*', str(a)))
+    elif '-' in line2:
+        s_start = '.'.join(line2.split('-')[0].split('.')[:-1])
+        s_middle = line2.split('.')[-1].split('-')[0]
+        s_end = line2.split('-')[1]
+        for i in range(int(s_middle), int(s_end) + 1):
+            print('{}.{}'.format(s_start, i))
+    else:
+        print(line.strip())
+    line = f.readline()
+
+f.close()

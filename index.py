@@ -258,7 +258,7 @@ oid_arp_mac = '1.3.6.1.2.1.4.22.1.2'
 
 
 def arp_mac(host, oid):
-    database = open('database.txt', 'a')
+    #database = open('database.txt', 'a')
     for (errorIndication,
          errorStatus,
          errorIndex,
@@ -304,10 +304,10 @@ def arp_mac(host, oid):
                 ip_all = '{0}.{1}.{2}.{3}'.format(ip_1, ip_2, ip_3, ip_4)
                 mac_all = '{0}:{1}:{2}:{3}:{4}:{5}'.format(aa, bb, cc, dd, ee, ff)
 
-                database.writelines(ip_all + ';' + mac_all + '\n')
+                #database.writelines(ip_all + ';' + mac_all + '\n')
 
                 print(ip_all, ' = ', mac_all)
-    database.close()
+    #database.close()
 
 
 def my_mac(host, oid):
@@ -366,7 +366,7 @@ def my_mac(host, oid):
 # pingtest ************************************************************************************************************
 
 def ping(ip):
-    response = os.system("ping -n 1 -w 20 " + ip)
+    response = os.system("ping -n 1 -w 100 " + ip)
     if response == 0:
         b = True
     else:
@@ -377,7 +377,6 @@ def ping(ip):
 
 
 # автодополнение ip адреса ********************************************************************************************
-
 f = open('ip.txt')
 line = f.readline()
 file = open('ip2.txt', 'w')
@@ -388,7 +387,7 @@ while line:
         while a < 5:
             a += 1
             #with open("ip2.txt", "a") as file:
-            file.write(line2.replace('*', str(a)))
+            file.write(line2.replace('*', str(a)) + '\n')
             # print(line2.replace('*', str(a)))
 
     elif '-' in line2:
@@ -397,7 +396,7 @@ while line:
         s_end = line2.split('-')[1]
         for i in range(int(s_middle), int(s_end) + 1):
             #with open("ip2.txt", "a") as file:
-            file.write('{}.{}'.format(s_start, i))
+            file.write('{}.{}'.format(s_start, i) + '\n')
             # print('{}.{}'.format(s_start, i))
 
     else:
@@ -414,7 +413,6 @@ f.close()
 #         file.write(line + '\n')
 
 # исполнить код *******************************************************************************************************
-
 """
 Открываем текстовый файл и построчно передаем строку с ip в функцию pingtest(),
 если пинг проходит, отдаем этот ip в функцию vendor().
@@ -424,13 +422,13 @@ p = open('ip2.txt')
 line22 = p.readline()
 while line22:
     if ping(line22.strip()):
-        print('ping ' + line22.strip() + ' yes')  # вывод сообщения о том, что пинг есть
+        #print('ping ' + line22.strip() + ' yes')  # вывод сообщения о том, что пинг есть
         vendor(line22.strip(), oid_test)
         sys_name(line22.strip(), oid_name)
-        interface_list(line22.strip(), oid_des)
+        #interface_list(line22.strip(), oid_des)
         arp_mac(line22.strip(), oid_arp_mac)
+        ip_address = line22.strip()
         print('\nМой мак-адрес =', my_mac(line22.strip(), oid_arp_mac))
-
     else:
         print('ping ' + line22.strip() + ' no')  # вывод сообщения о том, что пинга нет
     line22 = p.readline()

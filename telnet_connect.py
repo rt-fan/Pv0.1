@@ -3,9 +3,9 @@ import time
 import ipaddress
 
 
-host = ''
-login = ''
-password = ''
+host = '10.11.1.228'
+login = 'sbnt'
+password = 'sbnt@911'
 
 ip2 = host.split('.')
 ip3 = ip2[0] + '.' + ip2[1] + '.' + ip2[2] + '.0/24'
@@ -19,7 +19,7 @@ telnet.write(login.encode('ascii') + b'\n')
 telnet.write(password.encode('ascii') + b'\n')
 
 for ip in subnet1:
-    if ip != ip0:
+    if str(ip) != str(ip0):
         command = 'ping ' + str(ip)
         telnet.write(command.encode('ascii') + b'\n')
         print(ip)

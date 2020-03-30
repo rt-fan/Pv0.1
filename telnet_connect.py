@@ -3,9 +3,9 @@ import time
 import ipaddress
 
 
-host = '10.11.1.228'
-login = 'sbnt'
-password = 'sbnt@911'
+host = ''
+login = ''
+password = ''
 
 ip2 = host.split('.')
 ip3 = ip2[0] + '.' + ip2[1] + '.' + ip2[2] + '.0/24'
